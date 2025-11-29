@@ -1,0 +1,16 @@
+11-11-25 08:36:49 PM - NoClass.browser_setup - INFO - Opening edge browser
+11-11-25 08:36:57 PM - NoClass.Test_Stop_Values - INFO - *********************************** Started testing test_onestop******************************************
+11-11-25 08:36:57 PM - Login.__init__ - INFO - Excluding login button
+11-11-25 08:36:58 PM - Login.__init__ - INFO - logging button excluded
+11-11-25 08:36:58 PM - Login.__init__ - INFO - New page Loaded - Flight, Cheap Air Tickets , Hotels, Holiday, Trains Package Booking - Yatra.com
+11-11-25 08:36:58 PM - Login.__init__ - INFO - driver in page - Flight, Cheap Air Tickets , Hotels, Holiday, Trains Package Booking - Yatra.com
+11-11-25 08:36:58 PM - SearchFlights.__init__ - INFO - Setting source to 'Chennai'
+11-11-25 08:37:00 PM - SearchFlights.__init__ - INFO - element is located
+11-11-25 08:37:01 PM - SearchFlights.__init__ - DEBUG - source set to 'Chennai'
+11-11-25 08:37:01 PM - SearchFlights.__init__ - INFO - Setting destination to 'Kuwait'
+11-11-25 08:37:04 PM - SearchFlights.__init__ - INFO - element is located
+11-11-25 08:37:04 PM - SearchFlights.__init__ - DEBUG - destination set to 'Kuwait'
+11-11-25 08:37:04 PM - SearchFlights.__init__ - INFO - Setting journey date as'15/01/2026'
+11-11-25 08:37:06 PM - SearchFlights.__init__ - INFO -  journey date set to '15/01/2026'
+11-11-25 08:37:06 PM - SearchFlights.__init__ - INFO - Performing search
+11-11-25 08:37:07 PM - SearchFlights.__init__ - INFO - Successfully performed search

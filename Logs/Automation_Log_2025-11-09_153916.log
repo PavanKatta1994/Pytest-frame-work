@@ -1,0 +1,57 @@
+09-11-25 03:18:49 PM - NoClass.browser_setup - INFO - Opening edge browser
+09-11-25 03:18:55 PM - NoClass.Test_Stop_Values - INFO - *********************************** Started testing test_onestop******************************************
+09-11-25 03:18:55 PM - Login.__init__ - INFO - Excluding login button
+09-11-25 03:18:55 PM - Login.__init__ - INFO - logging button excluded
+09-11-25 03:18:55 PM - Login.__init__ - INFO - New page Loaded - Flight, Cheap Air Tickets , Hotels, Holiday, Trains Package Booking - Yatra.com
+09-11-25 03:18:55 PM - Login.__init__ - INFO - driver in page - Flight, Cheap Air Tickets , Hotels, Holiday, Trains Package Booking - Yatra.com
+09-11-25 03:18:55 PM - SearchFlights.__init__ - INFO - Setting source to 'Chennai'
+09-11-25 03:18:58 PM - SearchFlights.__init__ - INFO - element is located
+09-11-25 03:18:58 PM - SearchFlights.__init__ - DEBUG - source set to 'Chennai'
+09-11-25 03:18:58 PM - SearchFlights.__init__ - INFO - Setting destination to 'Kuwait'
+09-11-25 03:19:00 PM - SearchFlights.__init__ - INFO - element is located
+09-11-25 03:19:01 PM - SearchFlights.__init__ - DEBUG - destination set to 'Kuwait'
+09-11-25 03:19:01 PM - SearchFlights.__init__ - INFO - Setting journey date as'15/01/2026'
+09-11-25 03:19:01 PM - SearchFlights.__init__ - INFO -  journey date set to '15/01/2026'
+09-11-25 03:19:01 PM - SearchFlights.__init__ - INFO - Performing search
+09-11-25 03:19:02 PM - SearchFlights.__init__ - INFO - Successfully performed search
+09-11-25 03:19:31 PM - SearchFlights.__init__ - INFO - New page Loaded - Yatra.com | Chennai to Kuwait flights
+09-11-25 03:19:31 PM - SearchFlights.__init__ - INFO - driver in page - Yatra.com | Chennai to Kuwait flights
+09-11-25 03:19:31 PM - FlightResults.__init__ - INFO - clicking one stop
+09-11-25 03:19:31 PM - FlightResults.__init__ - INFO - clicking one stop successful
+09-11-25 03:19:31 PM - FlightResults.__init__ - INFO - scrolling down through page
+09-11-25 03:19:47 PM - FlightResults.__init__ - INFO - final height of the page 7669
+09-11-25 03:19:47 PM - FlightResults.__init__ - INFO - scroll down complete
+09-11-25 03:19:47 PM - FlightResults.__init__ - INFO - fetching stop values
+09-11-25 03:19:47 PM - FlightResults.__init__ - INFO - collected stop values from results
+09-11-25 03:19:47 PM - FlightResults.__init__ - INFO - no of stop values collected are :  71
+09-11-25 03:19:47 PM - Utils.compare_text_of_elements - INFO - no of values to be verified : 71
+09-11-25 03:19:47 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:47 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:47 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:47 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:47 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:47 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:47 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:47 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:47 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - Utils.compare_text_of_elements - INFO - element 1 Stop was verified : 1 Stop
+09-11-25 03:19:48 PM - NoClass.Test_Stop_Values - INFO - ***********************************test_onestop completed*****************************************
