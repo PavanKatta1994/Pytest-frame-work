@@ -5,23 +5,42 @@ from selenium.webdriver.common.by import By
 from Base.BaseDriver import BaseDriver
 from Pages.SearchFlights import SearchFlights
 from Utilities.Utilities import Utils
+import configparser
 
 class Login(BaseDriver):
     def __init__(self, driver):
         self.driver = driver
         super().__init__(driver)
         self.exclude_login_button_xpath = "//span[@class='style_cross__q1ZoV']//img[@alt='cross']"
-        self.log = Utils.custom_logger()
         # data for login test (https://practicetestautomation.com/practice-test-login/)
         self.username_textbox_id = "username"
         self.password_textbox_id = "password"
         self.login_button_id =  "submit"
         self.logout_button_link_text = "Log out"
+
+    def log(logtype, msg):
+        config = configparser.ConfigParser()
+        config.read("../ConfigFiles/config.ini")
+        generate_log = config["Logging"]["GenerateLogs"]
+        if generate_log == "True":
+            log = Utils.custom_logger()
+            if logtype == "Info":
+                log.info(msg)
+            elif logtype == "Warning":
+                log.warning(msg)
+            elif logtype == "Error":
+                log.error(msg)
+            elif logtype == "Critical":
+                log.critical(msg)
+            elif logtype == "Fatal":
+                log.fatal(msg)
+            else:
+                log.info("Incorrect log type specified")
         
 
     #this is for Yatra.com
     def exclude_login(self):
-        self.log.info("Excluding login button")
+        self.log("info",)
         self.driver.find_element(By.XPATH, self.exclude_login_button_xpath).click()
         self.log.info("logging button excluded")
         title = "Flight, Cheap Air Tickets , Hotels, Holiday, Trains Package Booking - Yatra.com"

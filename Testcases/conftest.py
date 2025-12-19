@@ -4,29 +4,49 @@ from Utilities.Utilities import Utils
 from datetime import datetime
 from pytest_html import extras
 import os
-import openpyxl
+import configparser
+
+def log(logtype,msg):
+    config = configparser.ConfigParser()
+    config.read("../ConfigFiles/config.ini")
+    generate_log = config["Logging"]["GenerateLogs"]
+    if generate_log == "True":
+        log = Utils.custom_logger()
+        if logtype == "Info":
+            log.info(msg)
+        elif logtype == "Warning":
+            log.warning(msg)
+        elif logtype == "Error":
+            log.error(msg)
+        elif logtype == "Critical":
+            log.critical(msg)
+        elif logtype == "Fatal":
+            log.fatal(msg)
+        else:
+            log.info("Incorrect log type specified")
+
 
 @pytest.fixture(scope="function")
-def browser_setup(browser):
-    log = Utils.custom_logger()
+def browser_setup(browser,url):
+
     if browser == "chrome":
-        log.info("Opening Chrome browser")
-        driver = chrome_module()
+        log("info", "Opening Chrome browser")
+        driver = chrome_module(url)
     elif browser == "edge":
-        log.info("Opening edge browser")
-        driver = edge_module()
+        log("info","Opening edge browser")
+        driver = edge_module(url)
     elif browser == "firefox":
-        log.info("Opening firefox browser")
-        driver = firefox_module()
+        log("info","Opening firefox browser")
+        driver = firefox_module(url)
     else:
-        log.info("No browser specified in run time")
-        log.info("Opening chrome browser")
-        driver = edge_module("https://practicetestautomation.com/practice-test-login/")
+        log("info","No browser specified")
+        log("info","Opening Chrome browser")
+        driver = chrome_module(url)
     yield driver
     driver.close()
 
 
-def chrome_module():
+def chrome_module(url=None):
     from selenium.webdriver.chrome.service import Service
     from selenium.webdriver.chrome.options import Options
     service = Service("D:\\TestFrameWork\\WebDrivers\\chromedriver.exe")
@@ -35,7 +55,12 @@ def chrome_module():
     options.add_experimental_option("prefs", prefs)
     options.add_argument("--start-maximized")
     driver = webdriver.Chrome(service=service, options=options)
-    driver.get("https://www.yatra.com/")
+    if url is None:
+        log("info", "Opening https://www.yatra.com/ url" )
+        driver.get("https://www.yatra.com/")
+    else:
+        log("info", "Opening " + url +  " url")
+        driver.get(url)
     return driver
 
 def edge_module(url=None):
@@ -53,7 +78,7 @@ def edge_module(url=None):
         driver.get(url)
     return driver
 
-def firefox_module():
+def firefox_module(url=None):
     from selenium.webdriver.firefox.service import Service
     from selenium.webdriver.firefox.options import Options
     service = Service("D:\\TestFrameWork\\WebDrivers\\geckodriver.exe")
@@ -64,14 +89,25 @@ def firefox_module():
     options.add_argument("--start-maximized")
     driver = webdriver.Chrome(service=service, options=options)
     driver.get("https://www.yatra.com/")
+    if url is None:
+        driver.get("https://www.yatra.com/")
+    else:
+        driver.get(url)
     return driver
 
 def pytest_addoption(parser):
     parser.addoption("--browser")
+    parser.addoption("--url")
 
 @pytest.fixture(autouse=True, scope="session")
 def browser(request):
     return request.config.getoption("--browser")
+
+
+@pytest.fixture(autouse=True, scope="session")
+def url(request):
+    return request.config.getoption("--url")
+
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):

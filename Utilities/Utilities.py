@@ -6,6 +6,7 @@ import mysql.connector
 import mysql
 import softest
 import openpyxl
+import configparser
 
 class Utils(softest.TestCase):
 
@@ -33,33 +34,39 @@ class Utils(softest.TestCase):
             return data
 
     @staticmethod
-    def custom_logger(loglevel = logging.DEBUG, newlog = False):
-        if newlog:
-            try:
-                extn = datetime.now().strftime("%Y-%m-%d_%H%M%S")
-                os.rename("../Logs/Automation_Log.log", "../Logs/Automation_Log_{}.log".format(extn))
-                os.chmod("../Logs/Automation_Log.log", 777)
-            except FileNotFoundError:
-                print("No Log file found")
-                print("Proceeding to create new log file")
-            else:
-                print("Existing log file renamed")
-                print("New log file to be created")
-        # logger_name = inspect.stack()[1][3]
-        frame = inspect.currentframe().f_back
-        method_name = frame.f_code.co_name
-        cls_name = frame.f_locals.get('self', None)
-        class_name = cls_name.__class__.__name__ if cls_name else "NoClass"
-        logger_name = f"{class_name}.{method_name}"
-        logger = logging.getLogger(logger_name)
-        logger.setLevel(loglevel)
-        if not logger.handlers:
-            fh = logging.FileHandler('../Logs/Automation_Log.log', mode='a')
-            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                                          datefmt='%d-%m-%y %I:%M:%S %p')
-            fh.setFormatter(formatter)
-            logger.addHandler(fh)
-        return logger
+    def custom_logger(newlog = True):
+        config = configparser.ConfigParser()
+        config.read("../ConfigFiles/config.ini")
+        generate_log = config["Logging"]["GenerateLogs"]
+        loglevel = config["Logging"]["LogLevel"]
+        if generate_log == "True":
+            if newlog:
+                try:
+                    extn = datetime.now().strftime("%Y-%m-%d_%H%M%S")
+                    os.rename("../Logs/Automation_Log.log", "../Logs/Automation_Log_{}.log".format(extn))
+                    os.chmod("../Logs/Automation_Log.log", 777)
+                except FileNotFoundError:
+                    print("No Log file found")
+                    print("Proceeding to create new log file")
+                else:
+                    print("Existing log file renamed")
+                    print("New log file to be created")
+                # logger_name = inspect.stack()[1][3]
+            frame = inspect.currentframe().f_back
+            method_name = frame.f_code.co_name
+            cls_name = frame.f_locals.get('self', None)
+            class_name = cls_name.__class__.__name__ if cls_name else "NoClass"
+            logger_name = f"{class_name}.{method_name}"
+            logger = logging.getLogger(logger_name)
+            logger.setLevel(loglevel)
+            if not logger.handlers:
+                fh = logging.FileHandler('../Logs/Automation_Log.log', mode='a')
+                formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                                              datefmt='%d-%m-%y %I:%M:%S %p')
+                fh.setFormatter(formatter)
+                logger.addHandler(fh)
+            return logger
+
 
     @staticmethod
     def get_current_date():
