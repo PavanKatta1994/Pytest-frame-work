@@ -7,19 +7,19 @@ from Utilities.Utilities import Utils
 
 class SearchFlights(BaseDriver):
     def __init__(self, driver):
-        self.log = Utils.custom_logger()
+        # self.log = Utils.custom_logger()
         self.driver = driver
         super().__init__(driver)
         #Locators for source and destination
         self.Search_Button_Xpath =  "//button[normalize-space()='Search']"
-        self.Source_Xpath = " //*[contains(@class, '1az9q6q')]/div[1]/div[1]/div[1]/p[3]"
-        self.Destination_Xpath = " //*[contains(@class, '1az9q6q')]/div[1]/div[2]/div[1]/p[3]"
-        self.Enter_Location_Name_Xpath = "//*[@id='input-with-icon-adornment']"
+        self.Source_Xpath = '//*[@id="__next"]/div/div[1]/div[2]/div[3]/div/div[2]/div[1]/div[1]/div[1]/div[1]/p[2]'
+        self.Destination_Xpath = '//*[@id="__next"]/div/div[1]/div[2]/div[3]/div/div[2]/div[1]/div[1]/div[3]/div[1]/p[2]'
+        self.Enter_Location_Name_Xpath = '//*[@id="input-with-icon-adornment"]'
         self.Location_Values_List_Xpath = "//*[contains(@class, '134xwrj')]//div"
         # Locators for setting date value
         self.current_date = None
         self.date_components = None
-        self.Open_Date_Field_Xpath = '//*[@id="__next"]/div/div[1]/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[1]/div[2]'
+        self.Open_Date_Field_Xpath = '//*[@id="__next"]/div/div[1]/div[2]/div[3]/div/div[2]/div[1]/div[2]/div/div[1]/div[2]'
         self.Current_Month_Year_Value_Xpath =  "//div[contains(@class, 'dual-calendar')]/div[2]//span[contains(@class, 'current-month')]"
         self.Next_Month_Year_Value_Xpath = "//div[contains(@class, 'dual-calendar')]/div[3]//span[contains(@class, 'current-month')]"
         self.Days_Of_Current_Month_Xpath ="//div[contains(@class, 'dual-calendar')]/div[2]"
@@ -37,31 +37,31 @@ class SearchFlights(BaseDriver):
                 break
 
     def set_source(self, source):
-        self.log.info("Setting source to '{}'".format(source))
+        # self.log.info("Setting source to '{}'".format(source))
         try:
             self.driver.find_element(By.XPATH, self.Source_Xpath).click()
             self.driver.find_element(By.XPATH, self.Enter_Location_Name_Xpath).send_keys(source)
             SearchFlights.select_city(self, source)
         except NoSuchElementException:
-            self.log.error("error in setting source as {}".format(source))
-            self.log.warning("Please update the xpath of source city element")
+            print("error in setting source as {}".format(source))
+            # self.log.warning("Please update the xpath of source city element")
         else:
-            self.log.debug("source set to '{}'".format(source))
+            print("source set to '{}'".format(source))
 
     def set_destination(self, destination):
-        self.log.info("Setting destination to '{}'".format(destination))
+        # self.log.info("Setting destination to '{}'".format(destination))
         try:
             self.driver.find_element(By.XPATH, self.Destination_Xpath).click()
             self.driver.find_element(By.XPATH, self.Enter_Location_Name_Xpath).send_keys(destination)
             SearchFlights.select_city(self, destination)
-        except NoSuchElementException:
-            self.log.error("error in setting source as {}".format(destination))
-            self.log.warning("Please update the xpath of source city element")
+        except NoSuchElementException as e:
+            print("error in setting source as {}".format(destination))
+            # self.log.warning("Please update the xpath of source city element")
         else:
-            self.log.debug("destination set to '{}'".format(destination))
+            print("destination set to '{}'".format(destination))
 
     def set_journey_date(self,journey_date_as_string):  #date to be sent in DD/MM/YYYY format
-        self.log.info("Setting journey date as'{}'".format(journey_date_as_string))
+        # self.log.info("Setting journey date as'{}'".format(journey_date_as_string))
         self.date_components = list(Utils.get_day_month_year_from_date(journey_date_as_string))
         # print(self.date_components)
         self.current_date = Utils.get_current_date()
@@ -74,28 +74,28 @@ class SearchFlights(BaseDriver):
                next_month_year = self.driver.find_element(By.XPATH, self.Next_Month_Year_Value_Xpath).text
                if current_month_year == month_year:
                    self.driver.find_element(By.XPATH, "//div[contains(@class, 'dual-calendar')]/div[2]/div[2]/div/div[contains(@class, '0{}')]".format(self.date_components[0])).click()
-                   self.log.info(" journey date set to '{}'".format(journey_date_as_string))
+                   # self.log.info(" journey date set to '{}'".format(journey_date_as_string))
                    date_not_set = False
                elif next_month_year == month_year:
                    self.driver.find_element(By.XPATH,  "//div[contains(@class, 'dual-calendar')]/div[3]/div[2]/div/div[contains(@class, '0{}')]".format(self.date_components[0])).click()
-                   self.log.info(" journey date set to '{}'".format(journey_date_as_string))
+                   # self.log.info(" journey date set to '{}'".format(journey_date_as_string))
                    date_not_set = False
                else:
                    self.driver.find_element(By.XPATH,self.Next_Month_Button_Xpath).click()
         else:
-            self.log.warning("journey date cannot be a past date - {}".format(journey_date_as_string))
-            self.log.info("journey date set to - {}".format(self.current_date))
+            print("journey date cannot be a past date - {}".format(journey_date_as_string))
+            # self.log.info("journey date set to - {}".format(self.current_date))
 
 
     def search(self):
-        self.log.info("Performing search")
+        # self.log.info("Performing search")
         try:
              self.driver.find_element(By.XPATH, self.Search_Button_Xpath).click()
         except NoSuchElementException:
-            self.log.error("Error in Performing search")
-            self.log.info("Please update the xpath of search button")
+            print("Error in Performing search")
+            # self.log.info("Please update the xpath of search button")
         else:
-            self.log.info("Successfully performed search")
+            print("Successfully performed search")
 
     def search_for_flights(self, source, destination, journey_date):
         self.set_source(source)

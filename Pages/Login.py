@@ -18,33 +18,13 @@ class Login(BaseDriver):
         self.login_button_id =  "submit"
         self.logout_button_link_text = "Log out"
 
-    def log(logtype, msg):
-        config = configparser.ConfigParser()
-        config.read("../ConfigFiles/config.ini")
-        generate_log = config["Logging"]["GenerateLogs"]
-        if generate_log == "True":
-            log = Utils.custom_logger()
-            if logtype == "Info":
-                log.info(msg)
-            elif logtype == "Warning":
-                log.warning(msg)
-            elif logtype == "Error":
-                log.error(msg)
-            elif logtype == "Critical":
-                log.critical(msg)
-            elif logtype == "Fatal":
-                log.fatal(msg)
-            else:
-                log.info("Incorrect log type specified")
-        
-
-    #this is for Yatra.com
     def exclude_login(self):
-        self.log("info",)
+        # self.log("info",)
         self.driver.find_element(By.XPATH, self.exclude_login_button_xpath).click()
-        self.log.info("logging button excluded")
-        title = "Flight, Cheap Air Tickets , Hotels, Holiday, Trains Package Booking - Yatra.com"
-        self.wait_until_page_loaded(title)
+        print(self.driver.title)
+        print("logging button excluded")
+        # title = "Flight, Cheap Air Tickets , Hotels, Holiday, Trains Package Booking - Yatra.com"
+        # self.wait_until_page_loaded(title)
         search_for_flights = SearchFlights(self.driver)
         return search_for_flights
 
@@ -52,45 +32,45 @@ class Login(BaseDriver):
         try:
             self.driver.find_element(By.ID, self.username_textbox_id).send_keys(username)
         except NoSuchElementException:
-            self.log.error("username field not found")
+            print("username field not found")
         else:
             username_field = self.driver.find_element(By.ID, self.username_textbox_id)
             username_set = username_field.get_attribute("value")
             if username_set != username:
-                self.log.error("username field does not match")
-                self.log.error("username input ({}) != username set ({})".format(username, username_set))
+                print("username field does not match")
+                print("username input ({}) != username set ({})".format(username, username_set))
             else:
-                self.log.info("username set successfully as " + username)
+                print("username set successfully as " + username)
 
     def set_password(self, password):
         try:
             self.driver.find_element(By.ID, self.password_textbox_id).send_keys(password)
         except NoSuchElementException:
-            self.log.error("password field not found")
+            print("password field not found")
         else:
             password_field = self.driver.find_element(By.ID, self.password_textbox_id)
             password_set = password_field.get_attribute("value")
             if password_set != password:
-                self.log.error("password field does not match")
-                self.log.error("password input ({}) != password set ({})".format(password, password_set))
+                print("password field does not match")
+                print("password input ({}) != password set ({})".format(password, password_set))
             else:
-                self.log.info("username set successfully as " + password)
+                print("username set successfully as " + password)
 
     def click_submit(self):
         try:
             self.driver.find_element(By.ID, self.login_button_id).click()
         except NoSuchElementException:
-            self.log.error("login button not found")
+            print("login button not found")
         else:
-            self.log.info("login button is clicked successfully")
+            print("login button is clicked successfully")
 
     def click_logout(self):
         try:
             self.driver.find_element(By.LINK_TEXT, self.logout_button_link_text).click()
         except NoSuchElementException:
-            self.log.error("logout button not found")
+            print("logout button not found")
         else:
-            self.log.info("logout button is clicked successfully")
+            print("logout button is clicked successfully")
             self.wait_until_page_loaded("Test Login | Practice Test Automation")
 
     def login(self, username, password):

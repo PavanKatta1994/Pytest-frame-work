@@ -4,7 +4,7 @@ from Utilities.Utilities import Utils
 
 
 class Test_Stop_Values:
-    log = Utils.custom_logger(newlog=True)
+    # log = Utils.custom_logger(newlog=True)
 
 
     @pytest.fixture(autouse=True)
@@ -16,9 +16,10 @@ class Test_Stop_Values:
 
     # @ddt(("Chennai", "Kuwait", "15/01/2026", "1 Stop"))
     # @unpack
-    @pytest.mark.parametrize(("s", "d", "j", "v"),[("Chennai", "Kuwait", "15/01/2026", "1 Stop"), ("Bangalore", "Kuwait", "13/01/2026", "1 Stop"), ("New Delhi", "Kuwait", "17/01/2026", "1 Stop")])
+    @pytest.mark.parametrize(("s", "d", "j", "v"),[("Chennai", "Kuwait", "15/04/2026", "1 Stop"), ("Bangalore", "Kuwait", "13/04/2026", "1 Stop"), ("New Delhi", "Kuwait", "17/04/2026", "1 Stop")])
+    # @pytest.mark.parametrize(("s", "d", "j", "v"), [("Chennai", "Kuwait", "15/03/2026", "1 Stop")])
     def test_onestop(self, s, d, j, v):
-        self.log.info("*********************************** Started testing test_onestop******************************************")
+        print("*********************************** Started testing test_onestop******************************************")
         search =self.login.exclude_login()
         flight_results = search.search_for_flights(s, d, j)
         flight_results.onestop()
@@ -31,4 +32,4 @@ class Test_Stop_Values:
         else:
             self.driver.save_screenshot("../Screenshots/test_onestop_pass.png")
         assert fail < len(stop_values)
-        self.log.info( "***********************************test_onestop completed*****************************************")
+        print( "***********************************test_onestop completed*****************************************")

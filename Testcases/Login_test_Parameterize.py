@@ -6,10 +6,10 @@ import softest
 class TestLogin:
 
     @pytest.fixture(autouse=True, scope="function")
-    def class_setup(self, browser_setup):
+    def class_setup(self, browser_setup_2):
         self.url = "https://practicetestautomation.com/practice-test-login/"
-        self.driver = browser_setup
-        self.logger = Utils.custom_logger()
+        self.driver = browser_setup_2
+        # self.logger = Utils.custom_logger()
         self.loginpage = Login(self.driver)
         self.case = 0
         self.file_name = "Login_Test_Data"
@@ -20,6 +20,8 @@ class TestLogin:
     @pytest.mark.parametrize(("username", "password", "user_message_validation", "login_indicator"),[("student","Password123","Congratulations","True"),
           ("incorrectUser","Password123","Your username is invalid!","False"),
           ("student","incorrectPassword","Your password is invalid!","False")])
+    # @pytest.mark.parametrize(("username", "password", "user_message_validation", "login_indicator"),
+    #                          [("student", "Password123", "Congratulations", "True")])
     def test_login(self, username, password, user_message_validation, login_indicator):
         test = softest.TestCase()
         user_message, login_ind = self.loginpage.login(username,password)

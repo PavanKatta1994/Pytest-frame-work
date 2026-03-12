@@ -86,15 +86,15 @@ class Utils(softest.TestCase):
 
     def compare_text_of_elements(self,element_list, value):
         utils = Utils()
-        self.log = utils.custom_logger()
+        # self.log = utils.custom_logger()
         fail_count = 0
         # print(type(element_list))
-        self.log.info("no of values to be verified : {}".format(len(element_list)))
+        print("no of values to be verified : {}".format(len(element_list)))
         for element in element_list:
             actual_value = element.text
             try:
                 assert actual_value == value
-                self.log.info(f"element {actual_value} was verified : {value}")
+                print(f"element {actual_value} was verified : {value}")
             except AssertionError:
                 fail_count += 1
         return fail_count

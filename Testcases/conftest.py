@@ -9,7 +9,7 @@ import configparser
 def log(logtype,msg):
     config = configparser.ConfigParser()
     config.read("../ConfigFiles/config.ini")
-    generate_log = config["Logging"]["GenerateLogs"]
+    generate_log = "True"
     if generate_log == "True":
         log = Utils.custom_logger()
         if logtype == "Info":
@@ -28,25 +28,48 @@ def log(logtype,msg):
 
 @pytest.fixture(scope="function")
 def browser_setup(browser,url):
-
+    if not url:
+        url = "https://www.yatra.com/"
     if browser == "chrome":
-        log("info", "Opening Chrome browser")
-        driver = chrome_module(url)
+        # log("info", "Opening Chrome browser")
+        driver = chrome_module("https://www.yatra.com/")
     elif browser == "edge":
-        log("info","Opening edge browser")
+        # log("info","Opening edge browser")
         driver = edge_module(url)
     elif browser == "firefox":
         log("info","Opening firefox browser")
         driver = firefox_module(url)
     else:
-        log("info","No browser specified")
-        log("info","Opening Chrome browser")
+        print("info","No browser specified")
+        print("info","Opening Chrome browser")
+        driver = chrome_module("https://www.yatra.com/")
+    yield driver
+    driver.close()
+
+@pytest.fixture(scope="function")
+def browser_setup_2(browser,url):
+    print(url)
+    if not url:
+        # print("going to if loop")
+        url = "https://practicetestautomation.com/practice-test-login/"
+    if browser == "chrome":
+        # log("info", "Opening Chrome browser")
+        driver = chrome_module(url)
+    elif browser == "edge":
+        # log("info","Opening edge browser")
+        driver = edge_module(url)
+    elif browser == "firefox":
+        log("info","Opening firefox browser")
+        driver = firefox_module(url)
+    else:
+        print("info","No browser specified")
+        print("info","Opening Chrome browser")
         driver = chrome_module(url)
     yield driver
     driver.close()
 
 
-def chrome_module(url=None):
+def chrome_module(url):
     from selenium.webdriver.chrome.service import Service
     from selenium.webdriver.chrome.options import Options
     service = Service("D:\\TestFrameWork\\WebDrivers\\chromedriver.exe")
@@ -55,15 +78,10 @@ def chrome_module(url=None):
     options.add_experimental_option("prefs", prefs)
     options.add_argument("--start-maximized")
     driver = webdriver.Chrome(service=service, options=options)
-    if url is None:
-        log("info", "Opening https://www.yatra.com/ url" )
-        driver.get("https://www.yatra.com/")
-    else:
-        log("info", "Opening " + url +  " url")
-        driver.get(url)
+    driver.get(url)
     return driver
 
-def edge_module(url=None):
+def edge_module(url):
     from selenium.webdriver.edge.service import Service
     from selenium.webdriver.edge.options import Options
     service = Service("D:\\TestFrameWork\\WebDrivers\\msedgedriver.exe")
@@ -72,13 +90,10 @@ def edge_module(url=None):
     options.add_experimental_option("prefs", prefs)
     options.add_argument("--start-maximized")
     driver = webdriver.Edge(service=service, options=options)
-    if url is None:
-        driver.get("https://www.yatra.com/")
-    else:
-        driver.get(url)
+    driver.get(url)
     return driver
 
-def firefox_module(url=None):
+def firefox_module(url):
     from selenium.webdriver.firefox.service import Service
     from selenium.webdriver.firefox.options import Options
     service = Service("D:\\TestFrameWork\\WebDrivers\\geckodriver.exe")
@@ -88,11 +103,7 @@ def firefox_module(url=None):
     options.add_argument("--enable-notifications")
     options.add_argument("--start-maximized")
     driver = webdriver.Chrome(service=service, options=options)
-    driver.get("https://www.yatra.com/")
-    if url is None:
-        driver.get("https://www.yatra.com/")
-    else:
-        driver.get(url)
+    driver.get(url)
     return driver
 
 def pytest_addoption(parser):
