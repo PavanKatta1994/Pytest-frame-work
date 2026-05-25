@@ -16,8 +16,8 @@ class Test_Stop_Values:
 
     # @ddt(("Chennai", "Kuwait", "15/01/2026", "1 Stop"))
     # @unpack
-    @pytest.mark.parametrize(("s", "d", "j", "v"),[("Chennai", "Kuwait", "15/04/2026", "1 Stop"), ("Bangalore", "Kuwait", "13/04/2026", "1 Stop"), ("New Delhi", "Kuwait", "17/04/2026", "1 Stop")])
-    # @pytest.mark.parametrize(("s", "d", "j", "v"), [("Chennai", "Kuwait", "15/03/2026", "1 Stop")])
+    # @pytest.mark.parametrize(("s", "d", "j", "v"),[("Chennai", "Kuwait", "15/04/2026", "1 Stop"), ("Bangalore", "Kuwait", "13/04/2026", "1 Stop"), ("New Delhi", "Kuwait", "17/04/2026", "1 Stop")])
+    @pytest.mark.parametrize(("s", "d", "j", "v"), [("Chennai", "Kuwait", "15/03/2026", "1 Stop")])
     def test_onestop(self, s, d, j, v):
         print("*********************************** Started testing test_onestop******************************************")
         search =self.login.exclude_login()

@@ -5,7 +5,8 @@ import os
 import mysql.connector
 import mysql
 import softest
-import openpyxl
+from openpyxl import Workbook, load_workbook
+from pathlib import Path
 import configparser
 
 class Utils(softest.TestCase):
@@ -99,45 +100,187 @@ class Utils(softest.TestCase):
                 fail_count += 1
         return fail_count
 
-    @staticmethod
-    def update_excel(filename, sheetname, column_name, row_id, value):
-        file = "../Testdata/" + filename + ".xlsx"
-        excel = openpyxl.load_workbook(file)
-        worksheet = excel[sheetname]
-        column_count = 1
-        for i in range(worksheet.max_column):
-            col_val = worksheet.cell(1, i + 1).value
-            if col_val == column_name:
-                break
-            else:
-                column_count += 1
-        col_id = column_count
-        worksheet.cell(row_id + 1, column_count).value = value
-        excel.save(file)
-        excel.close()
+class Excel:
 
-    @staticmethod
-    def ExcelData(filename, sheetname):
-        file = "../Testdata/" + filename + ".xlsx"
-        excel = openpyxl.load_workbook(file)
-        worksheet = excel[sheetname]
-        # calculating number of columns as test data
-        column_count = 0
-        for i in range(worksheet.max_column):
-            value = worksheet.cell(1, i + 1).value
-            if value != "Test Status":
-                print(value)
-                column_count += 1
+        def __init__(
+                self,
+                file_name: str,
+                sheet_name: str,
+                location: str = "../Files",
+                delete_existing: bool = False
+        ):
+
+            self.file_name = file_name if file_name.endswith(".xlsx") else file_name + ".xlsx"
+            self.sheet_name = sheet_name
+            self.location = Path(location)
+            self.location.mkdir(parents=True, exist_ok=True)
+
+            self.file_path = self.location / self.file_name
+
+            # Delete existing excel if requested
+            if delete_existing and self.file_path.exists():
+                self.file_path.unlink()
+                print(f"Existing excel deleted : {self.file_path}")
+
+            # Create workbook object
+            if self.file_path.exists():
+                self.workbook = load_workbook(self.file_path)
+                print(f"Existing excel loaded : {self.file_path}")
             else:
-                break
-        rows = worksheet.max_row
-        cols = column_count
-        whole_date = []
-        for i in range(rows-1):
-            data = []
-            for j in range(cols):
-                value = worksheet.cell(i + 2, j + 1).value
-                data.append(value)
-            whole_date.append(data)
-        excel.close()
-        return whole_date
+                self.workbook = Workbook()
+                print(f"New excel will be created : {self.file_path}")
+
+            # Create / Load sheet
+            if self.sheet_name in self.workbook.sheetnames:
+                self.sheet = self.workbook[self.sheet_name]
+                print(f"Using existing sheet : {self.sheet_name}")
+            else:
+                # Remove default sheet if empty workbook
+                if "Sheet" in self.workbook.sheetnames and len(self.workbook.sheetnames) == 1:
+                    default_sheet = self.workbook["Sheet"]
+                    self.workbook.remove(default_sheet)
+
+                self.sheet = self.workbook.create_sheet(self.sheet_name)
+                print(f"New sheet created : {self.sheet_name}")
+
+        # ---------------------------------------------------
+        # m1. add_header
+        # ---------------------------------------------------
+        def add_header(self, columns: list):
+
+            if not columns:
+                raise ValueError("Header list cannot be empty")
+
+            for col_num, column_name in enumerate(columns, start=1):
+                self.sheet.cell(row=1, column=col_num, value=column_name)
+
+            print("Header added successfully")
+
+        # ---------------------------------------------------
+        # m2. add_data
+        # ---------------------------------------------------
+        def add_data(self, values: list):
+
+            if not values:
+                raise ValueError("Data list cannot be empty")
+
+            next_row = self.sheet.max_row + 1
+
+            for col_num, value in enumerate(values, start=1):
+
+                # Convert empty string / None to NULL
+                if value == "" or value is None:
+                    value = "NULL"
+
+                self.sheet.cell(row=next_row, column=col_num, value=value)
+
+            print(f"Data added successfully at row {next_row}")
+
+        # ---------------------------------------------------
+        # Internal helper method
+        # ---------------------------------------------------
+        def _get_header_map(self):
+
+            headers = {}
+
+            for col in range(1, self.sheet.max_column + 1):
+                header_name = self.sheet.cell(row=1, column=col).value
+
+                if header_name:
+                    headers[header_name] = col
+
+            return headers
+
+        # ---------------------------------------------------
+        # Internal helper method
+        # ---------------------------------------------------
+        def _find_matching_rows(self, condition: dict):
+
+            headers = self._get_header_map()
+
+            for key in condition.keys():
+                if key not in headers:
+                    print(f"Column '{key}' not found")
+                    return []
+
+            matching_rows = []
+
+            for row in range(2, self.sheet.max_row + 1):
+
+                match = True
+
+                for key, expected_value in condition.items():
+
+                    col_num = headers[key]
+                    actual_value = self.sheet.cell(row=row, column=col_num).value
+
+                    if actual_value != expected_value:
+                        match = False
+                        break
+
+                if match:
+                    matching_rows.append(row)
+
+            return matching_rows
+
+        # ---------------------------------------------------
+        # m3. modify_column_data
+        # ---------------------------------------------------
+        def modify_column_data(self, condition: dict, column: str, value):
+
+            headers = self._get_header_map()
+
+            if column not in headers:
+                print(f"Column '{column}' not found")
+                return
+
+            matching_rows = self._find_matching_rows(condition)
+
+            if not matching_rows:
+                print("Condition not satisfied. No matching rows found.")
+                return
+
+            target_col = headers[column]
+
+            for row in matching_rows:
+                self.sheet.cell(row=row, column=target_col, value=value)
+
+            print(f"{len(matching_rows)} row(s) updated successfully")
+
+        # ---------------------------------------------------
+        # m4. read_column_data
+        # ---------------------------------------------------
+        def read_column_data(self, condition: dict, column: str):
+
+            headers = self._get_header_map()
+
+            if column not in headers:
+                print(f"Column '{column}' not found")
+                return None
+
+            matching_rows = self._find_matching_rows(condition)
+
+            if not matching_rows:
+                return None
+
+            target_col = headers[column]
+
+            result = []
+
+            for row in matching_rows:
+                result.append(
+                    self.sheet.cell(row=row, column=target_col).value
+                )
+
+            if len(result) == 1:
+                return result[0]
+
+            return result
+
+        # ---------------------------------------------------
+        # m5. save_excel
+        # ---------------------------------------------------
+        def save_excel(self):
+
+            self.workbook.save(self.file_path)
+            print(f"Excel saved successfully : {self.file_path}")

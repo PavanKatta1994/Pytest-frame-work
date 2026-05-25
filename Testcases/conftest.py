@@ -6,24 +6,24 @@ from pytest_html import extras
 import os
 import configparser
 
-def log(logtype,msg):
-    config = configparser.ConfigParser()
-    config.read("../ConfigFiles/config.ini")
-    generate_log = "True"
-    if generate_log == "True":
-        log = Utils.custom_logger()
-        if logtype == "Info":
-            log.info(msg)
-        elif logtype == "Warning":
-            log.warning(msg)
-        elif logtype == "Error":
-            log.error(msg)
-        elif logtype == "Critical":
-            log.critical(msg)
-        elif logtype == "Fatal":
-            log.fatal(msg)
-        else:
-            log.info("Incorrect log type specified")
+# def log(logtype,msg):
+#     config = configparser.ConfigParser()
+#     config.read("../ConfigFiles/config.ini")
+#     generate_log = "True"
+#     if generate_log == "True":
+#         log = Utils.custom_logger()
+#         if logtype == "Info":
+#             log.info(msg)
+#         elif logtype == "Warning":
+#             log.warning(msg)
+#         elif logtype == "Error":
+#             log.error(msg)
+#         elif logtype == "Critical":
+#             log.critical(msg)
+#         elif logtype == "Fatal":
+#             log.fatal(msg)
+#         else:
+#             log.info("Incorrect log type specified")
 
 
 @pytest.fixture(scope="function")
@@ -37,7 +37,7 @@ def browser_setup(browser,url):
         # log("info","Opening edge browser")
         driver = edge_module(url)
     elif browser == "firefox":
-        log("info","Opening firefox browser")
+        # log("info","Opening firefox browser")
         driver = firefox_module(url)
     else:
         print("info","No browser specified")
@@ -59,7 +59,27 @@ def browser_setup_2(browser,url):
         # log("info","Opening edge browser")
         driver = edge_module(url)
     elif browser == "firefox":
-        log("info","Opening firefox browser")
+        # log("info","Opening firefox browser")
+        driver = firefox_module(url)
+    else:
+        print("info","No browser specified")
+        print("info","Opening Chrome browser")
+        driver = chrome_module(url)
+    yield driver
+    driver.close()
+
+@pytest.fixture(scope="function")
+def browser_setup_3(browser,url):
+    if not url:
+        url = "https://www.amazon.com/"
+    if browser == "chrome":
+        # log("info", "Opening Chrome browser")
+        driver = chrome_module(url)
+    elif browser == "edge":
+        # log("info","Opening edge browser")
+        driver = edge_module(url)
+    elif browser == "firefox":
+        # log("info","Opening firefox browser")
         driver = firefox_module(url)
     else:
         print("info","No browser specified")

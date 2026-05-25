@@ -2,6 +2,7 @@ import time
 from selenium.common import StaleElementReferenceException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.common.by import By
 from Utilities.Utilities import Utils
 
 
@@ -54,4 +55,22 @@ class BaseDriver:
         print("New page Loaded - {}".format(page))
         print("driver in page - {}".format(page))
 
+    def scroll_by_scroller_length(self):
+        last_height = self.driver.execute_script("return document.body.scrollHeight")
+        self.move_count=0
+
+        while True:
+            # Scroll down by the viewport height (length of the scroller)
+            self.driver.execute_script("window.scrollBy(0, window.innerHeight);")
+
+            # Pause to allow content to load (adjust as needed)
+            time.sleep(5)
+
+            # Calculate new scroll height
+            new_height = self.driver.execute_script("return window.scrollY + window.innerHeight")
+            self.move_count = self.move_count + 1
+
+            # Break if we've reached the bottom
+            if new_height == last_height or self.move_count > 5:
+                break
 
